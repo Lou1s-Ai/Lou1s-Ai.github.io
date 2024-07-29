@@ -13,6 +13,7 @@
 		<link rel="icon" type="image/png" href="images/L.png">
 		<title>Louis-Ai</title>
 		<link rel="stylesheet" href="css/documentation.css">
+		<link rel="stylesheet" href="css/waifu.css" />
 	</head>
 	<body>
 		<div id="header">
@@ -93,5 +94,39 @@
 				<img src="images/copyright.png" alt="Copyright" class="images" height="14px"> Lou1s-Ai
 			</div>
 		</div>
+		<div class="waifu">
+			<div class="waifu-tips"></div>
+			<canvas id="live2d" class="live2d"></canvas>
+			<div class="waifu-tool">
+				<span class="fui-home"></span>
+				<span class="fui-chat"></span>
+				<span class="fui-eye"></span>
+				<span class="fui-user"></span>
+				<span class="fui-photo"></span>
+				<span class="fui-info-circle"></span>
+				<span class="fui-cross"></span>
+			</div>
+		</div>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="js/waifu-tips.js"></script>
+		<script src="js/live2d.js"></script>
+		<script src="js/autoload.js"></script>
+		<script type="text/javascript">
+			live2d_settings['modelId'] = 1;
+			live2d_settings['modelTexturesId'] = 87;
+			initModel("js/waifu-tips.json")
+		</script>
+		<script src="js/ClickEffects.js"></script>
+		<script>
+		        // 1.禁止出现右键菜单
+		        document.addEventListener('contextmenu', function(e) {
+		            e.preventDefault();
+		        });
+		
+		        // 2.禁止选中文字
+		        document.addEventListener('selectstart', function(e) {
+		            e.preventDefault();
+		        });
+		    </script>
 	</body>
 </html>
