@@ -43,7 +43,7 @@
         { "selector": ".container a[href^='http']", "text": ["要看看 <span style=\"color:#0099cc;\">{text}</span> 么？"] },
         { "selector": ".fui-home", "text": ["点击前往首页，想回到上一页可以使用浏览器的后退功能哦"] },
         { "selector": ".fui-chat", "text": ["一言一语，一颦一笑。一字一句，一颗赛艇。"] },
-        { "selector": ".fui-eye", "text": ["嗯··· 要切换 看板娘 吗？"] },
+        { "selector": ".fui-eye", "text": ["嗯··· 要切换我吗？"] },
         { "selector": ".fui-user", "text": ["喜欢换装 Play 吗？"] },
         { "selector": ".fui-photo", "text": ["要拍张纪念照片吗？"] },
         { "selector": ".fui-info-circle", "text": ["这里有关于我的信息呢"] },
@@ -76,6 +76,7 @@
         {
             "selector": ".waifu #live2d",
             "text": [
+				"Louis喜欢的人是23的，可是她好像把那人微信删了，噢她也是团委的",
                 "是…是不小心碰到了吧",
                 "萝莉控是什么呀",
                 "你看到我的小熊了吗",
@@ -94,7 +95,6 @@
         { "date": "06/01", "text": ["<span style=\"color:#0099cc;\">儿童节</span>了呢，快活的时光总是短暂，要是永远长不大该多好啊…"] },
         { "date": "09/03", "text": ["<span style=\"color:#0099cc;\">中国人民抗日战争胜利纪念日</span>，铭记历史、缅怀先烈、珍爱和平、开创未来。"] },
         { "date": "09/10", "text": ["<span style=\"color:#0099cc;\">教师节</span>，在学校要给老师问声好呀~"] },
-        { "date": "10/01", "text": ["<span style=\"color:#0099cc;\">国庆节</span>，新中国已经成立69年了呢"] },
         { "date": "11/05-11/12", "text": ["今年的<span style=\"color:#0099cc;\">双十一</span>是和谁一起过的呢~"] },
         { "date": "12/20-12/31", "text": ["这几天是<span style=\"color:#0099cc;\">圣诞节</span>，主人肯定又去剁手买买买了~"] }
     ]
