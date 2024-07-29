@@ -67,7 +67,7 @@ live2d_settings['waifuDraggableRevert'] = true;         // 松开鼠标还原拖
 live2d_settings['l2dVersion']           = '1.4.2';        // 当前版本
 live2d_settings['l2dVerDate']           = '2018.11.12'; // 版本更新日期
 live2d_settings['homePageUrl']          = 'auto';       // 主页地址，可选 'auto'(自动), '{URL 网址}'
-live2d_settings['aboutPageUrl']         = 'https://Louis-Ai.github.io';   // 关于页地址, '{URL 网址}'
+live2d_settings['aboutPageUrl']         = 'https://www.gfbzb.gov.cn/bydj/';   // 关于页地址, '{URL 网址}'
 live2d_settings['screenshotCaptureName']= 'live2d.png'; // 看板娘截图文件名，例如 'live2d.png'
 
 /****************************************************************************************************/
