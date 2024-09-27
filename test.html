@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louis RGB Outline Effect</title>
+    <style>
+        @keyframes rgb-outline {
+            0% { text-shadow: 2px 2px 5px red; }
+            33% { text-shadow: 2px 2px 5px green; }
+            66% { text-shadow: 2px 2px 5px blue; }
+            100% { text-shadow: 2px 2px 5px red; }
+        }
+
+        .rgb-text {
+            font-size: 100px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            color: white;
+            position: relative;
+            animation: rgb-outline 3s infinite;
+        }
+
+        .rgb-text .heart {
+            color: white;
+            position: absolute;
+            top: -25px;
+            left: 160px;
+        }
+    </style>
+</head>
+<body style="background-color: black; display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div>
+        <span class="rgb-text">Louis</span>
+        <span class="rgb-text heart">♥</span>
+    </div>
+</body>
+</html>
