@@ -8,6 +8,11 @@
 	box-sizing: border-box;
 }
 
+svg {
+	width: 80%;
+	height: auto;
+}
+
 ::-webkit-scrollbar {
 	width: 4px;
 	color: #c70039;
@@ -1795,7 +1800,6 @@ For devices with smaller width like mobile phone
 		left: 2.5%;
 		opacity: .8;
 		transition: all .4s ease;
-		display: none;
 	}
 
 	.blogs {
