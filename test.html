@@ -1,38 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Louis RGB Outline Effect</title>
-    <style>
-        @keyframes rgb-outline {
-            0% { text-shadow: 2px 2px 5px red; }
-            33% { text-shadow: 2px 2px 5px green; }
-            66% { text-shadow: 2px 2px 5px blue; }
-            100% { text-shadow: 2px 2px 5px red; }
-        }
+	<head>
+		<style>
+			.gradient {
+				width: 400px;
+				height: 400px;
+				background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+				background-size: 600% 600%;
+				animation: gradientBG 5s ease infinite;
+			}
+			@keyframes gradientBG {
+				0% {
+					background-position: 0% 50%;
+				}
 
-        .rgb-text {
-            font-size: 100px;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            color: white;
-            position: relative;
-            animation: rgb-outline 3s infinite;
-        }
+				50% {
+					background-position: 100% 50%;
+				}
 
-        .rgb-text .heart {
-            color: white;
-            position: absolute;
-            top: -25px;
-            left: 160px;
-        }
-    </style>
-</head>
-<body style="background-color: black; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div>
-        <span class="rgb-text">Louis</span>
-        <span class="rgb-text heart">♥</span>
-    </div>
-</body>
+				100% {
+					background-position: 0% 50%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="gradient"></div>
+	</body>
 </html>
