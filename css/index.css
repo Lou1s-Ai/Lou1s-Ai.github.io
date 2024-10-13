@@ -8,7 +8,7 @@
 	box-sizing: border-box;
 }
 
-object {
+svg {
 	width: 80%;
 	height: auto;
 }
