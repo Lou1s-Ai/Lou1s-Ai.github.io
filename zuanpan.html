@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>今天吃什么</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+			}
+
+			body {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				min-height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				padding: 20px;
+			}
+
+			.container {
+				text-align: center;
+				max-width: 800px;
+				width: 100%;
+			}
+
+			h1 {
+				color: white;
+				margin-bottom: 30px;
+				font-size: 2.5rem;
+				text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+			}
+
+			.转盘-wrapper {
+				position: relative;
+				width: 100%;
+				max-width: 600px;
+				margin: 0 auto 40px;
+			}
+
+			.转盘 {
+				width: 100%;
+				height: 100%;
+				aspect-ratio: 1/1;
+				border-radius: 50%;
+				position: relative;
+				overflow: hidden;
+				border: 10px solid white;
+				box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+				transition: transform 5s cubic-bezier(0.17, 0.67, 0.13, 0.99);
+				cursor: pointer;
+			}
+
+			.转盘.active {
+				animation: spin 5s cubic-bezier(0.17, 0.67, 0.13, 0.99);
+			}
+
+			.转盘-section {
+				position: absolute;
+				width: 50%;
+				height: 50%;
+				transform-origin: bottom right;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 20px;
+				overflow: hidden;
+			}
+
+			.转盘-section span {
+				color: white;
+				font-weight: bold;
+				font-size: 0.8rem;
+				text-align: center;
+				transform: rotate(45deg);
+				width: 120%;
+				text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+			}
+
+			.转盘-center {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 120px;
+				height: 120px;
+				border-radius: 50%;
+				background: white;
+				transform: translate(-50%, -50%);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: bold;
+				font-size: 1.2rem;
+				color: #764ba2;
+				cursor: pointer;
+				box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+				z-index: 10;
+				transition: all 0.3s ease;
+			}
+
+			.转盘-center:hover {
+				transform: translate(-50%, -50%) scale(1.05);
+				box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+			}
+
+			.指针 {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 40px;
+				height: 60px;
+				background: #ff6b6b;
+				clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+				z-index: 5;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+			}
+
+			.result {
+				background: white;
+				padding: 25px;
+				border-radius: 15px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+				margin-top: 20px;
+				width: 100%;
+				max-width: 500px;
+			}
+
+			.result h2 {
+				color: #764ba2;
+				margin-bottom: 15px;
+				font-size: 1.8rem;
+			}
+
+			.result p {
+				font-size: 1.2rem;
+				color: #333;
+				line-height: 1.6;
+			}
+
+			.店铺列表 {
+				background: rgba(255, 255, 255, 0.9);
+				padding: 20px;
+				border-radius: 10px;
+				margin-top: 30px;
+				width: 100%;
+				max-height: 200px;
+				overflow-y: auto;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+			}
+
+			.店铺列表 h3 {
+				color: #764ba2;
+				margin-bottom: 10px;
+				text-align: left;
+			}
+
+			.店铺-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+				gap: 8px;
+			}
+
+			.店铺-grid span {
+				font-size: 0.85rem;
+				color: #555;
+				padding: 5px;
+				border-radius: 4px;
+				background: rgba(118, 75, 162, 0.1);
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+
+				100% {
+					transform: rotate(calc(360deg * 5 + var(--random-rotation, 0deg)));
+				}
+			}
+
+			@keyframes resultFade {
+				0% {
+					transform: scale(0.95);
+					opacity: 0;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			/* 响应式设计 */
+			@media (max-width: 768px) {
+				h1 {
+					font-size: 2rem;
+				}
+
+				.转盘-center {
+					width: 100px;
+					height: 100px;
+					font-size: 1rem;
+				}
+
+				.result h2 {
+					font-size: 1.5rem;
+				}
+
+				.result p {
+					font-size: 1.1rem;
+				}
+
+				.店铺-grid {
+					grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+				}
+			}
+
+			@media (max-width: 480px) {
+				.转盘-wrapper {
+					max-width: 320px;
+				}
+
+				.转盘-section span {
+					font-size: 0.7rem;
+				}
+
+				.店铺-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>校园美食转盘</h1>
+
+			<div class="转盘-wrapper">
+				<div class="指针"></div>
+				<div class="转盘" id="转盘">
+					<!-- 转盘内容将通过JS动态生成 -->
+				</div>
+				<div class="转盘-center" id="开始按钮">开始选择</div>
+			</div>
+
+			<div class="result" id="结果区域">
+				<h2>今天吃什么</h2>
+				<p>点击转盘开始！</p>
+			</div>
+		</div>
+
+		<script>
+			// 店铺数据
+			const 店铺列表 = [
+				"关东煮(商业街店)",
+				"广式烧腊 (二饭一楼)",
+				"鸭屎香手打柠檬茶",
+				"甜市糖水   (一饭三楼)",
+				"藤原豆腐店(商业街店)",
+				"小喜姐炸串（商业街）",
+				"老广味餐厅（四饭二楼）",
+				"又一村肠粉（商业街）",
+				"曾记港式扒饭滑蛋饭(四饭二楼)",
+				"囍饭寿司    (一饭二楼)",
+				"端州炒饭",
+				"面包铺",
+				"蒙自源",
+				"饭易得（一饭三楼）",
+				"沪上阿姨茶瀑布（商业街）",
+				"尚滋堡（一饭三楼）",
+				"范堡王·现烤汉堡（第三食堂一楼）",
+				"来个炒饭（一饭三楼）",
+				"校堡贝 (一饭一楼)",
+				"煎饺王子（商业街）",
+				"塔斯汀中国汉堡（一饭二楼）",
+				"老上海粉面云吞水饺 (二饭一楼)",
+				"校乐堡·中国汉堡（商业街）",
+				"嘉美乐面包蛋糕（商业街）",
+				"客兴源大众餐(二饭一楼)",
+				"湛记大众餐 (三饭一楼)",
+				"土豆泥拌饭·毎日特价   (一饭二楼)",
+				"咕嘟花小甲   (一饭三楼)",
+				"衢州鸭头（商业街）",
+				"钵钵鸡卤肉卷(商业街店)",
+				"潮味鲜（有粿条、面、饭）（三饭一楼）",
+				"鲜享食呈水果捞（商业街）",
+				"港式烧腊 (三饭一楼)",
+				"石仔巷葡式滑蛋饭   (一饭三楼)",
+				"肯德基",
+				"FU+牛肉饭   (一饭三楼)",
+				"手工兰州拉面（四饭二楼)",
+				"大师兄三拼饭（二饭一楼）",
+				"港式烧腊  (四饭二楼)",
+				"老港记烧腊   (一饭三楼)",
+				"老上海云吞粉面（商业街）",
+				"何氏特色炒粉生滚粥（商业街）",
+				"过桥米线（一饭三楼）",
+				"一口鲜小碗菜，南昌拌粉(三饭一楼)",
+				"沙县小吃 (三饭一楼)",
+				"粉面世家   (一饭二楼)",
+				"水果捞（二饭一楼）",
+				"粤香小厨（二饭一楼）",
+				"朱家小馆羊杂面（商业街）",
+				"肉酱盖码饭?好吃下饭（二饭一楼）",
+				"三河里麻辣香锅、麻辣烫   (二饭一楼)",
+				"巴比早餐店",
+				"云吞，粉面，汤饭（四饭二楼）",
+				"柳州螺蛳粉（四饭二楼）",
+				"啫啫煲仔饭",
+				"太哼冰室（商业街）",
+				"隆江猪脚饭（一饭二楼）",
+				"隆江猪脚饭 (二饭一楼)",
+				"蒸鲜生-粤式小碟菜(一饭3楼）",
+				"悦轻荷轻食减脂餐（三饭一楼）",
+				"排骨饭（一饭三楼）",
+				"赣味小炒(现点现炒，好吃又下饭)(第三饭堂)",
+				"牛杂面  特色炸串 饭团(三饭一楼)",
+				"莫夫子 （扒饭、焗饭、意面）（一饭三楼）",
+				"华记美食 (三饭一楼)店内设有早餐",
+				"一口鲜南昌拌粉，瓦罐汤（三饭一楼）",
+				"麻香记—-麻辣烫&香锅（三饭一楼）",
+				"状元鸡公煲（商业街）",
+				"大众餐小炒 (三饭一楼)",
+				"千百味拉面 （每日特价）（一饭二楼）",
+				"豆花四果汤（一饭三楼）",
+				"蜜雪冰城（商业街）"
+			];
+
+			// 生成漂亮的颜色数组
+			const 颜色数组 = [
+				'#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57',
+				'#FF9FF3', '#54A0FF', '#5F27CD', '#00D2D3', '#FF9F43',
+				'#10AC84', '#EE5A24', '#0984E3', '#A29BFE', '#FD79A8',
+				'#E17055', '#74B9FF', '#00B894', '#FDCB6E', '#E84393',
+				'#00CEC9', '#F8C471', '#8E44AD', '#3498DB', '#E74C3C',
+				'#2ECC71', '#F39C12', '#9B59B6', '#1ABC9C', '#E67E22'
+			];
+
+			const 转盘 = document.getElementById('转盘');
+			const 开始按钮 = document.getElementById('开始按钮');
+			const 结果区域 = document.getElementById('结果区域');
+
+			let isSpinning = false;
+			let 当前角度 = 0;
+
+			// 初始化转盘
+			function 初始化转盘() {
+				// 清空转盘
+				转盘.innerHTML = '';
+
+				// 计算每个扇区的角度
+				const 扇区数量 = 店铺列表.length;
+				const 每个扇区角度 = 360 / 扇区数量;
+
+				// 创建每个扇区
+				店铺列表.forEach((店铺, 索引) => {
+					const 扇区 = document.createElement('div');
+					扇区.className = '转盘-section';
+
+					// 计算扇区的旋转角度
+					const 旋转角度 = 索引 * 每个扇区角度;
+					扇区.style.transform = `rotate(${旋转角度}deg)`;
+
+					// 设置扇区背景色（循环使用颜色数组）
+					const 颜色索引 = 索引 % 颜色数组.length;
+					扇区.style.background = 颜色数组[颜色索引];
+
+					// 创建扇区文本
+					const 文本 = document.createElement('span');
+					文本.textContent = 店铺;
+					扇区.appendChild(文本);
+
+					转盘.appendChild(扇区);
+				});
+			}
+
+
+			// 旋转转盘
+			function 旋转转盘() {
+				if (isSpinning) return;
+
+				isSpinning = true;
+				开始按钮.textContent = '旋转中...';
+
+				// 生成随机旋转角度（5-10圈之间）
+				const 随机圈数 = 5 + Math.random() * 5;
+				const 随机角度 = Math.random() * 360;
+				const 总旋转角度 = 随机圈数 * 360 + 随机角度;
+
+				// 设置CSS变量
+				转盘.style.setProperty('--random-rotation', `${总旋转角度}deg`);
+
+				// 添加旋转类
+				转盘.classList.add('active');
+
+				// 旋转结束后计算结果
+				setTimeout(() => {
+					计算结果(总旋转角度);
+					isSpinning = false;
+					开始按钮.textContent = '再次选择';
+					转盘.classList.remove('active');
+					// 更新当前角度（取模360以保持在0-360范围内）
+					当前角度 = (当前角度 + 总旋转角度) % 360;
+				}, 5000); // 与CSS动画时间一致
+			}
+
+			// 计算旋转结果
+			function 计算结果(旋转角度) {
+				// 计算最终角度（相对于初始位置）
+				const 最终角度 = (当前角度 + 旋转角度) % 360;
+				// 计算指向的扇区索引
+				const 扇区数量 = 店铺列表.length;
+				const 每个扇区角度 = 360 / 扇区数量;
+				// 调整角度，使指针指向扇区中心（指针在顶部，所以需要减去90度）
+				const 调整后角度 = (最终角度 + 90) % 360;
+				const 选中索引 = Math.floor(调整后角度 / 每个扇区角度) % 扇区数量;
+
+				// 获取选中的店铺
+				const 选中店铺 = 店铺列表[选中索引];
+
+				// 更新结果区域
+				结果区域.innerHTML = `
+					<h2>今日推荐</h2>
+					<p>恭喜你中大奖了！今天吃 <strong>${选中店铺}</strong> ！</p>
+				`;
+
+				// 添加结果动画效果
+				结果区域.style.animation = 'none';
+				结果区域.offsetHeight; // 触发重绘
+				结果区域.style.animation = 'resultFade 0.5s ease-out';
+			}
+
+			// 绑定点击事件
+			开始按钮.addEventListener('click', 旋转转盘);
+			转盘.addEventListener('click', 旋转转盘);
+
+			// 初始化转盘
+			初始化转盘();
+		</script>
+	</body>
+</html>
