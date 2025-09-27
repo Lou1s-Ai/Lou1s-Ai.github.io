@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>请假条</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							primary: '#4F46E5',
+							secondary: '#EC4899',
+							neutral: '#F3F4F6',
+							paper: '#FFFFFF',
+						},
+						fontFamily: {
+							sans: ['Inter', 'system-ui', 'sans-serif'],
+						},
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+			@layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .shadow-soft {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            }
+            .transition-smooth {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .wavy-underline {
+                text-decoration-line: underline;
+                text-decoration-style: wavy;
+                text-decoration-color: #EC4899;
+                text-underline-offset: 6px;
+            }
+            .btn-container {
+                position: relative;
+                width: 150px; /* 按钮宽度 */
+                height: 42px; /* 按钮高度 */
+            }
+			.colors{
+				background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+				background-size: 400% 400%;
+				animation: gradient 15s ease infinite;
+				
+			}
+			@keyframes gradient {
+			    0% {
+			        background-position: 0% 50%;
+			    }
+			    50% {
+			        background-position: 100% 50%;
+			    }
+			    100% {
+			        background-position: 0% 50%;
+			    }
+			}
+			
+        }
+    </style>
+	</head>
+	<body
+		class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen flex items-center justify-center p-4 font-sans">
+		<div class="container max-w-md w-full bg-paper rounded-xl shadow-soft overflow-hidden relative">
+			<!-- 初始请假条页面 -->
+			<div id="p1" class="transition-smooth">
+				<div class="bg-primary text-white p-6 text-center colors">
+					<h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-wide">请假条</h1>
+				</div>
+
+				<div class="p-8 space-y-6">
+					<div class="space-y-4">
+						<p class="text-gray-700 leading-relaxed pl-6">导员我想请假，如果点到不同意我就国庆好好学习</p>
+					</div>
+
+					<div class="pt-4 border-t border-gray-100"></div>
+
+					<div class="flex flex-wrap justify-between items-center gap-4">
+						<div class="flex gap-3">
+							<button
+								class="allow bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-smooth shadow-md hover:shadow-lg flex items-center gap-2">
+								<i class="fa fa-check"></i> 同意
+							</button>
+
+							<!-- 使用容器包裹按钮，实现鼠标检测区域 -->
+							<div class="btn-container" id="btn-container">
+								<button id="dynamic-btn"
+									class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium transition-smooth shadow-sm hover:shadow-lg flex items-center gap-2">
+									<i class="fa fa-times"></i> <span>不同意</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 批准后的页面 -->
+			<div id="p2" class="transition-smooth hidden">
+				<div class="bg-secondary text-white p-6 text-center colors">
+					<h2 class="text-xl font-bold">已批准</h2>
+				</div>
+
+				<div class="p-8 text-center space-y-6">
+					<div class="text-2xl md:text-3xl text-gray-800 font-medium leading-relaxed">
+						谢谢老师！<br>
+					</div>
+					<button
+						class="exit bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-medium transition-smooth shadow-md hover:shadow-lg mt-4">
+						确定
+					</button>
+				</div>
+			</div>
+		</div>
+		<script>
+			(function() {
+				// 工具函数
+				function $(selector) {
+					return document.querySelector(selector);
+				}
+
+				// 获取元素
+				const $p1 = document.getElementById('p1');
+				const $p2 = document.getElementById('p2');
+				const $btnContainer = $('#btn-container');
+				const $dynamicBtn = $('#dynamic-btn');
+				const $btnIcon = $dynamicBtn.querySelector('i');
+				const $btnText = $dynamicBtn.querySelector('span');
+				const $allowBtn = $('.allow');
+				const $exitBtn = $('.exit');
+
+				let isBlockClose = true;
+
+				// 容器鼠标进入事件 - 隐藏按钮
+				$btnContainer.addEventListener('mouseenter', function() {
+					$dynamicBtn.style.opacity = '0';
+					$dynamicBtn.style.transform = 'scale(0.8)';
+					$dynamicBtn.style.pointerEvents = 'none'; // 防止鼠标悬停时还能点击
+				});
+
+				// 容器鼠标离开事件 - 显示按钮
+				$btnContainer.addEventListener('mouseleave', function() {
+					$dynamicBtn.style.opacity = '1';
+					$dynamicBtn.style.transform = 'scale(1)';
+					$dynamicBtn.style.pointerEvents = 'auto'; // 恢复点击能力
+				});
+
+				// 动态按钮点击事件
+				$dynamicBtn.addEventListener('click', function() {
+					alert('老师再考虑一下吧~');
+
+					// 添加抖动效果
+					this.classList.add('animate-shake');
+					setTimeout(() => {
+						this.classList.remove('animate-shake');
+					}, 500);
+				});
+
+				// 同意按钮点击事件
+				$allowBtn.addEventListener('click', function() {
+					$p1.classList.add('opacity-0', 'scale-95');
+					setTimeout(() => {
+						$p1.style.display = 'none';
+						$p2.style.display = 'block';
+						setTimeout(() => {
+							$p2.classList.remove('opacity-0', 'scale-95');
+						}, 50);
+					}, 300);
+				});
+
+				// 退出按钮点击事件
+				$exitBtn.addEventListener('click', function() {
+					isBlockClose = false;
+					// 模拟关闭效果
+					$('.container').classList.add('opacity-0', 'scale-95');
+					setTimeout(() => {
+						if (window.close) {
+							window.close();
+						} else {
+							alert('感谢使用！');
+						}
+					}, 300);
+				});
+
+				// 阻止页面关闭
+				window.addEventListener('beforeunload', function(e) {
+					if (isBlockClose) {
+						e.preventDefault();
+						e.returnValue = '确定要离开吗？';
+						return '确定要离开吗？';
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
